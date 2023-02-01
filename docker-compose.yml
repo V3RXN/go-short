@@ -1,0 +1,27 @@
+services:
+  db:
+    container_name: go-short-db
+    image: mysql:5.7
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - go-short-nw
+  app:
+    container_name: go-short-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: go-short:1.0
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    networks:
+      - go-short-nw
+networks:
+  go-short-nw:
